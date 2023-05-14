@@ -15,26 +15,18 @@ $(function () {
         // TODO: Implement your plugin's view model here.
         self.performAutoLevel = function () {
             $.ajax({
-                url: API_BASEURL + "plugin/snapmaker_extended/autolevel",
+                url: API_BASEURL + "plugin/snapmaker_extended/command",
                 type: "POST",
                 dataType: "json",
-                success: function () {
-                    new PNotify({
-                        title: "Success",
-                        text: "Auto bed leveling initiated.",
-                        type: "success",
-                        hide: true,
-                    });
-                },
-                error: function () {
-                    new PNotify({
-                        title: "Error",
-                        text: "Failed to initiate auto bed leveling.",
-                        type: "error",
-                        hide: true,
-                    });
-                },
+                data: JSON.stringify({
+                    command: "autolevel",
+                }),
+                contentType: "application/json; charset=UTF-8",
+                success: function(response) {
+                    console.log(response);
+                }
             });
+            
         };
     }
 
