@@ -4,10 +4,12 @@ import octoprint.plugin
 from octoprint.events import Events
 from flask import jsonify
 
-class SnapmakerExtendedPlugin(octoprint.plugin.SettingsPlugin,
-                              octoprint.plugin.AssetPlugin,
-                              octoprint.plugin.TemplatePlugin):
-    
+
+class SnapmakerExtendedPlugin(
+    octoprint.plugin.SettingsPlugin,
+    octoprint.plugin.AssetPlugin,
+    octoprint.plugin.TemplatePlugin,
+):
     def get_settings_defaults(self):
         return {
             # put your plugin's default settings here
@@ -17,7 +19,7 @@ class SnapmakerExtendedPlugin(octoprint.plugin.SettingsPlugin,
         return {
             "js": ["js/snapmaker_extended.js"],
             "css": ["css/snapmaker_extended.css"],
-            "less": ["less/snapmaker_extended.less"]
+            "less": ["less/snapmaker_extended.less"],
         }
 
     # def get_api_commands(self):
@@ -51,6 +53,7 @@ class SnapmakerExtendedPlugin(octoprint.plugin.SettingsPlugin,
 
 __plugin_name__ = "Snapmaker_extended Plugin"
 __plugin_pythoncompat__ = ">=3,<4"
+
 
 def __plugin_load__():
     global __plugin_implementation__
