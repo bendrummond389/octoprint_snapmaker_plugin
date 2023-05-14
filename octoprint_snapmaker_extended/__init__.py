@@ -1,6 +1,5 @@
 # coding=utf-8
 from __future__ import absolute_import
-
 import octoprint.plugin
 from octoprint.events import Events
 from flask import jsonify
@@ -43,10 +42,10 @@ class SnapmakerExtendedPlugin(octoprint.plugin.SettingsPlugin,
             }
         }
 
-    @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
-    def auto_level(self):
-        self._printer.commands("G1029 A")
-        return jsonify(success=True)
+    # @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
+    # def auto_level(self):
+    #     self._printer.commands("G1029 A")
+    #     return jsonify(success=True)
 
 
 __plugin_name__ = "Snapmaker_extended Plugin"
