@@ -9,6 +9,7 @@ class SnapmakerExtendedPlugin(
     octoprint.plugin.SettingsPlugin,
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.TemplatePlugin,
+    octoprint.plugin.BlueprintPlugin,
 ):
     def get_settings_defaults(self):
         return {
