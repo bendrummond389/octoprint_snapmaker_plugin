@@ -47,7 +47,7 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
     def auto_level(self):
-        self._printer.commands("G1029 A")
+        self._printer.commands("G28")
         return jsonify(success=True)
 
 

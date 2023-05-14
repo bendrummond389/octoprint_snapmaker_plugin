@@ -36,7 +36,6 @@ $(function () {
      */
     OCTOPRINT_VIEWMODELS.push({
         construct: SnapmakerExtendedViewModel,
-        dependencies: ["loginStateViewModel", "settingsViewModel"],
         elements: ["#tab_plugin_snapmaker_extended"]
     });
 });
