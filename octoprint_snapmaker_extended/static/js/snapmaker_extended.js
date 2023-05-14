@@ -5,7 +5,7 @@
  * License: MIT
  */
 $(function () {
-    function Snapmaker_extendedViewModel(parameters) {
+    function SnapmakerExtendedViewModel(parameters) {
         var self = this;
 
         // assign the injected parameters, e.g.:
@@ -44,11 +44,7 @@ $(function () {
      */
     OCTOPRINT_VIEWMODELS.push({
         construct: SnapmakerExtendedViewModel,
-        // ViewModels your plugin depends on, e.g. loginStateViewModel, settingsViewModel, ...
-        dependencies: [
-            /* "loginStateViewModel", "settingsViewModel" */
-        ],
-        // Elements to bind to, e.g. #settings_plugin_snapmaker_extended, #tab_plugin_snapmaker_extended, ...
-        elements: ["#tab_plugin_snapmaker_extended"],
+        dependencies: ["loginStateViewModel", "settingsViewModel"],
+        elements: ["#tab_plugin_snapmaker_extended"]
     });
 });
