@@ -11,20 +11,22 @@ from __future__ import absolute_import
 
 import octoprint.plugin
 
+from octoprint.events import Events
+import octoprint.plugin
+from flask import jsonify
+
 class Snapmaker_extendedPlugin(octoprint.plugin.SettingsPlugin,
     octoprint.plugin.AssetPlugin,
     octoprint.plugin.TemplatePlugin
 ):
 
     ##~~ SettingsPlugin mixin
-
     def get_settings_defaults(self):
         return {
             # put your plugin's default settings here
         }
 
     ##~~ AssetPlugin mixin
-
     def get_assets(self):
         # Define your plugin's asset files to automatically include in the
         # core UI here.
@@ -35,7 +37,6 @@ class Snapmaker_extendedPlugin(octoprint.plugin.SettingsPlugin,
         }
 
     ##~~ Softwareupdate hook
-
     def get_update_information(self):
         # Define the configuration for your plugin to use with the Software Update
         # Plugin here. See https://docs.octoprint.org/en/master/bundledplugins/softwareupdate.html
@@ -55,6 +56,11 @@ class Snapmaker_extendedPlugin(octoprint.plugin.SettingsPlugin,
                 "pip": "https://github.com/bendrummond389/octoprint_snapmaker_plugin/archive/{target_version}.zip",
             }
         }
+        
+    @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
+    def auto_level(self):
+        self._printer.commands("G1029 A")  # Execute auto bed leveling command
+        return jsonify(success=True)
 
 
 # If you want your plugin to be registered within OctoPrint under a different name than what you defined in setup.py
