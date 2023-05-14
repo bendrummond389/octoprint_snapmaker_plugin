@@ -7,6 +7,7 @@ from flask import jsonify
 class SnapmakerExtendedPlugin(octoprint.plugin.SettingsPlugin,
                               octoprint.plugin.AssetPlugin,
                               octoprint.plugin.TemplatePlugin):
+    
     def get_settings_defaults(self):
         return {
             # put your plugin's default settings here
@@ -19,15 +20,15 @@ class SnapmakerExtendedPlugin(octoprint.plugin.SettingsPlugin,
             "less": ["less/snapmaker_extended.less"]
         }
 
-    def get_api_commands(self):
-        return {
-            "autolevel": []
-        }
+    # def get_api_commands(self):
+    #     return {
+    #         "autolevel": []
+    #     }
 
-    def on_api_command(self, command, data):
-        if command == "autolevel":
-            self._printer.commands("G1029 A")
-            return jsonify(success=True)
+    # def on_api_command(self, command, data):
+    #     if command == "autolevel":
+    #         self._printer.commands("G1029 A")
+    #         return jsonify(success=True)
 
     def get_update_information(self):
         return {
@@ -42,10 +43,10 @@ class SnapmakerExtendedPlugin(octoprint.plugin.SettingsPlugin,
             }
         }
 
-    # @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
-    # def auto_level(self):
-    #     self._printer.commands("G1029 A")
-    #     return jsonify(success=True)
+    @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
+    def auto_level(self):
+        self._printer.commands("G1029 A")
+        return jsonify(success=True)
 
 
 __plugin_name__ = "Snapmaker_extended Plugin"

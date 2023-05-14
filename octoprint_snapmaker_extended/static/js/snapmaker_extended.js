@@ -15,7 +15,7 @@ $(function () {
         // TODO: Implement your plugin's view model here.
         self.performAutoLevel = function () {
             $.ajax({
-                url: API_BASEURL + "plugin/snapmaker_extended/command",
+                url: API_BASEURL + "plugin/snapmaker_extended/autolevel",
                 type: "POST",
                 dataType: "json",
                 data: JSON.stringify({
