@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 import octoprint.plugin
 from octoprint.events import Events
-from flask import jsonify
+from flask import jsonify, request
 
 
 class SnapmakerExtendedPlugin(
@@ -50,12 +50,12 @@ class SnapmakerExtendedPlugin(
     def auto_level(self):
         self._printer.commands("G1029 A")
         return jsonify(success=True)
-    
+
     @octoprint.plugin.BlueprintPlugin.route("/setZOffset", methods=["POST"])
     def set_z_offset(self):
         self._printer.commands("G92 Z0")
         return jsonify(success=True)
-    
+
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
         laser_power = 255  # Adjust as necessary
@@ -64,17 +64,23 @@ class SnapmakerExtendedPlugin(
         for line in range(20):
             z = 3 + (line * 0.5)
             y = line * 2
-            commands.extend([f"G1 Z{z}", f"G1 X0 Y{y} F1000", f"M3 P{laser_power}", f"G1 X20 Y{y} F1000", "M5"])
+            commands.extend(
+                [
+                    f"G1 Z{z}",
+                    f"G1 X0 Y{y} F1000",
+                    f"M3 P{laser_power}",
+                    f"G1 X20 Y{y} F1000",
+                    "M5",
+                ]
+            )
 
         self._printer.commands(commands)
-        
+
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
     def set_focused_z_offset(self):
-        selected_line = request.json.get('selectedLine')
+        selected_line = request.json.get("selectedLine")
         new_z_offset = 1 + (selected_line * 0.5)
         self._printer.commands([f"G0 Z{new_z_offset}", "G92 Z0"])
-
-
 
 
 __plugin_name__ = "Snapmaker_extended Plugin"
