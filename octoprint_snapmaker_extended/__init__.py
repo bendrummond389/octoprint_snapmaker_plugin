@@ -59,20 +59,20 @@ class SnapmakerExtendedPlugin(
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
         laser_power = 255  # Adjust as necessary
-        commands = ["G0 X0 Y0"]  # Move to start position
+        commands = ["G92 X0 Y0"]  # Move to start position
 
         for line in range(20):
-            z = 1 + (line * 0.5)
+            z = 3 + (line * 0.5)
             y = line * 2
             commands.extend([f"G1 Z{z}", f"G1 X0 Y{y} F1000", f"M3 P{laser_power}", f"G1 X20 Y{y} F1000", "M5"])
 
         self._printer.commands(commands)
         
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
-    def set_focused_z_offset(self):
-        selected_line = request.json.get('selectedLine')
-        new_z_offset = 1 + (selected_line * 0.5)
-        self._printer.commands([f"G0 Z{new_z_offset}", "G92 Z0"])
+def set_focused_z_offset(self):
+    selected_line = request.json.get('selectedLine')
+    new_z_offset = 1 + (selected_line * 0.5)
+    self._printer.commands([f"G0 Z{new_z_offset}", "G92 Z0"])
 
 
 
