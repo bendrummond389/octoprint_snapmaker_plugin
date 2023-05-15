@@ -75,12 +75,14 @@ class SnapmakerExtendedPlugin(
             )
 
         self._printer.commands(commands)
+        return jsonify(success=True)  # return response
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
     def set_focused_z_offset(self):
         selected_line = request.json.get("selectedLine")
         new_z_offset = 1 + (selected_line * 0.5)
         self._printer.commands([f"G0 Z{new_z_offset}", "G92 Z0"])
+        return jsonify(success=True)  # return response
 
 
 __plugin_name__ = "Snapmaker_extended Plugin"
