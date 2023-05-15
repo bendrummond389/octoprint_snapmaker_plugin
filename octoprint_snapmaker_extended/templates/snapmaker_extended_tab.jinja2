@@ -3,4 +3,11 @@
 <div id="tab_plugin_snapmaker_extended" class="tab-pane fade in">
     <h1>Snapmaker Extended</h1>
     <button id="autoLevelButton" data-bind="click: performAutoLevel">Auto Bed Leveling</button>
+    <button id="ZOffsetButton" data-bind="click: setZOffset">Set Z Offset</button>
+    <button id="engraveTestLinesButton" data-bind="click: engraveTestLines">Engrave Test Lines</button>
+    <div>
+        <label for="selectedLineInput">Selected Line:</label>
+        <input id="selectedLineInput" type="number" min="0" max="19" step="1" data-bind="value: selectedLine">
+        <button id="setFocusedZOffsetButton" data-bind="click: function () { setFocusedZOffset(selectedLine()); }">Set Focused Z Offset</button>
+    </div>
 </div>

@@ -8,6 +8,8 @@ $(function () {
     function SnapmakerExtendedViewModel(parameters) {
         var self = this;
 
+        self.selectedLine = ko.observable(0);
+
         // assign the injected parameters, e.g.:
         // self.loginStateViewModel = parameters[0];
         // self.settingsViewModel = parameters[1];
@@ -15,11 +17,58 @@ $(function () {
         // TODO: Implement your plugin's view model here.
         self.performAutoLevel = function () {
             $.ajax({
-                url: window.location.origin + "/plugin/snapmaker_extended/autolevel",
+                url:
+                    window.location.origin +
+                    "/plugin/snapmaker_extended/autolevel",
                 type: "POST",
                 dataType: "json",
                 data: JSON.stringify({
                     command: "autolevel",
+                }),
+                contentType: "application/json; charset=UTF-8",
+                success: function (response) {
+                    console.log(response);
+                },
+            });
+        };
+
+        self.setZOffset = function () {
+            $.ajax({
+                url:
+                    window.location.origin +
+                    "/plugin/snapmaker_extended/setZOffset",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({}),
+                contentType: "application/json; charset=UTF-8",
+                success: function (response) {
+                    console.log(response);
+                },
+            });
+        };
+
+        self.engraveTestLines = function () {
+            $.ajax({
+                url:
+                    window.location.origin +
+                    "/plugin/snapmaker_extended/engraveTestLines",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({}),
+                contentType: "application/json; charset=UTF-8",
+                success: function (response) {
+                    console.log(response);
+                },
+            });
+        };
+
+        self.setFocusedZOffset = function (selectedLine) {
+            $.ajax({
+                url: window.location.origin + "/plugin/snapmaker_extended/setFocusedZOffset",
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify({
+                    selectedLine: selectedLine
                 }),
                 contentType: "application/json; charset=UTF-8",
                 success: function(response) {
@@ -27,6 +76,7 @@ $(function () {
                 }
             });
         };
+        
     }
 
     /* view model class, parameters for constructor, container to bind to
@@ -35,6 +85,6 @@ $(function () {
      */
     OCTOPRINT_VIEWMODELS.push({
         construct: SnapmakerExtendedViewModel,
-        elements: ["#tab_plugin_snapmaker_extended"]
+        elements: ["#tab_plugin_snapmaker_extended"],
     });
 });
