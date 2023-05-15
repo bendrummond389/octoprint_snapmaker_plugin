@@ -80,7 +80,9 @@ class SnapmakerExtendedPlugin(
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
     def set_focused_z_offset(self):
         selected_line = request.json.get("selectedLine")
-        new_z_offset = 1 + (selected_line * 0.5)
+        new_z_offset = 1 + (
+            float(selected_line) * 0.5
+        )  # convert selected_line to float
         self._printer.commands([f"G0 Z{new_z_offset}", "G92 Z0"])
         return jsonify(success=True)  # return response
 
