@@ -11,19 +11,17 @@
 
   <hr class="line-style">
 
-
   <!-- Set Initial Z-axis Zero Section -->
   <div>
     <h3>Set Initial Z-axis Zero</h3>
     <!-- Z jogging control panel -->
     <div id="control-jog-z" class="jog-panel">
-      <h1>Z</h1>
-      <div>
+      <div class="horizontal-container">
+        <!-- Z increment button -->
         <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting(), click: function() { $root.sendJogCommand('z',1) }">
           <i class="fas fa-arrow-up"></i>
         </button>
-      </div>
-      <div>
+        <!-- Z decrement button -->
         <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting(), click: function() { $root.sendJogCommand('z',-1) }">
           <i class="fas fa-arrow-down"></i>
         </button>
@@ -31,7 +29,7 @@
     </div>
 
     <!-- Jog distance -->
-    <div class="distance">
+    <div class="distance horizontal-container">
       <div class="btn-group" data-toggle="buttons-radio" id="jog_distance">
         <!-- ko foreach: distances -->
         <button type="button" class="btn distance" data-bind="enable: $root.isOperational() && !$root.isPrinting(), text: $data, click: function() { $root.distance($data) }, css: { active: $root.distance() === $data }, attr: { id: 'control-distance' + $root.stripDistanceDecimal($data) }"></button>
@@ -40,13 +38,12 @@
     </div>
 
     <!-- Set Z Zero -->
-    <div>
+    <div class="horizontal-container">
       <button id="ZOffsetButton" data-bind="enable: $root.isOperational() && !$root.isPrinting(), click: setZOffset">Zero Off Worksurface</button>
     </div>
   </div>
 
-  <hr class="line-style"> <!-- Add horizontal line here -->
-
+  <hr class="line-style">
 
   <!-- Test Engraving Section -->
   <div>
