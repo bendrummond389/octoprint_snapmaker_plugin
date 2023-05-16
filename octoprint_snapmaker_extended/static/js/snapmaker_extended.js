@@ -12,12 +12,13 @@ $(function () {
 
         var controlViewModel = parameters[0];
 
-          // Access the $root functions from the ControlViewModel
-          self.isOperational = controlViewModel.isOperational;
-          self.isPrinting = controlViewModel.isPrinting;
-  
-          self.distances = ko.observableArray([0.1, 1, 10, 100]);
-          self.distance = ko.observable(10);
+        // Access functions from the ControlViewModel
+        self.isOperational = controlViewModel.isOperational;
+        self.isPrinting = controlViewModel.isPrinting;
+        self.sendJogCommand = controlViewModel.sendJogCommand;
+
+        self.distances = ko.observableArray([0.1, 1, 10, 100]);
+        self.distance = ko.observable(10);
 
         // TODO: Implement your plugin's view model here.
         self.performAutoLevel = function () {
