@@ -3,3 +3,11 @@
   border-bottom: 1px solid #e5e5e5;
   margin: 20px 0;
 }
+
+#tab_plugin_snapmaker_extended {
+  display: flex;
+}
+
+.section {
+  flex: 1;
+  margin

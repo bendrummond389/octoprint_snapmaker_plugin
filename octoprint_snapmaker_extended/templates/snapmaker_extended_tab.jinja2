@@ -4,23 +4,23 @@
   <h2>Snapmaker Extended</h2>
 
   <!-- Auto Bed Leveling Section -->
-  <div>
+  <div class="section">
     <h3>Auto Bed Leveling</h3>
     <button id="autoLevelButton" data-bind="click: performAutoLevel">Start Auto Bed Leveling</button>
   </div>
 
-  <hr class="line-style">
-
   <!-- Set Initial Z-axis Zero Section -->
-  <div>
+  <div class="section">
     <h3>Set Initial Z-axis Zero</h3>
     <!-- Z jogging control panel -->
     <div id="control-jog-z" class="jog-panel">
-      <div class="horizontal-container">
+      <div>
         <!-- Z increment button -->
         <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting(), click: function() { $root.sendJogCommand('z',1) }">
           <i class="fas fa-arrow-up"></i>
         </button>
+      </div>
+      <div>
         <!-- Z decrement button -->
         <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting(), click: function() { $root.sendJogCommand('z',-1) }">
           <i class="fas fa-arrow-down"></i>
@@ -29,7 +29,7 @@
     </div>
 
     <!-- Jog distance -->
-    <div class="distance horizontal-container">
+    <div class="distance">
       <div class="btn-group" data-toggle="buttons-radio" id="jog_distance">
         <!-- ko foreach: distances -->
         <button type="button" class="btn distance" data-bind="enable: $root.isOperational() && !$root.isPrinting(), text: $data, click: function() { $root.distance($data) }, css: { active: $root.distance() === $data }, attr: { id: 'control-distance' + $root.stripDistanceDecimal($data) }"></button>
@@ -38,15 +38,13 @@
     </div>
 
     <!-- Set Z Zero -->
-    <div class="horizontal-container">
+    <div>
       <button id="ZOffsetButton" data-bind="enable: $root.isOperational() && !$root.isPrinting(), click: setZOffset">Zero Off Worksurface</button>
     </div>
   </div>
 
-  <hr class="line-style">
-
   <!-- Test Engraving Section -->
-  <div>
+  <div class="section">
     <h3>Test Engraving</h3>
     <button id="engraveTestLinesButton" data-bind="click: engraveTestLines">Run Test Engraving</button>
     <div>
