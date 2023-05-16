@@ -10,6 +10,10 @@ $(function () {
 
         self.selectedLine = ko.observable(0);
 
+        var controlViewModel = parameters[0];
+
+        self.isOperational = controlViewModel.isOperational;
+
         // assign the injected parameters, e.g.:
         // self.loginStateViewModel = parameters[0];
         // self.settingsViewModel = parameters[1];
@@ -64,19 +68,20 @@ $(function () {
 
         self.setFocusedZOffset = function (selectedLine) {
             $.ajax({
-                url: window.location.origin + "/plugin/snapmaker_extended/setFocusedZOffset",
+                url:
+                    window.location.origin +
+                    "/plugin/snapmaker_extended/setFocusedZOffset",
                 type: "POST",
                 dataType: "json",
                 data: JSON.stringify({
-                    selectedLine: selectedLine
+                    selectedLine: selectedLine,
                 }),
                 contentType: "application/json; charset=UTF-8",
-                success: function(response) {
+                success: function (response) {
                     console.log(response);
-                }
+                },
             });
         };
-        
     }
 
     /* view model class, parameters for constructor, container to bind to
@@ -85,6 +90,7 @@ $(function () {
      */
     OCTOPRINT_VIEWMODELS.push({
         construct: SnapmakerExtendedViewModel,
+        dependencies: ["controlViewModel"],
         elements: ["#tab_plugin_snapmaker_extended"],
     });
 });
