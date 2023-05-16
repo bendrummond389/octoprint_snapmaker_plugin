@@ -1,13 +1,1 @@
-.line-style {
-  border: 0;
-  border-bottom: 1px solid #e5e5e5;
-  margin: 20px 0;
-}
-
-#tab_plugin_snapmaker_extended {
-  display: flex;
-}
-
-.section {
-  flex: 1;
-  margin
+/* TODO: Have your plugin's CSS files generated to here. */
