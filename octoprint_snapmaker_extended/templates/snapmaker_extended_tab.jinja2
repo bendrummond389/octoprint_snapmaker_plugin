@@ -1,18 +1,35 @@
 <!-- snapmaker_extended_tab.jinja2 -->
 
 <div id="tab_plugin_snapmaker_extended" class="tab-pane fade in">
-  <h1>Snapmaker Extended</h1>
+  <h2>Snapmaker Extended</h2>
 
+  <!-- Auto Bed Leveling Section -->
   <div>
-    <h2>Bed Leveling</h2>
-    <button id="autoLevelButton" data-bind="click: performAutoLevel">Auto Bed Leveling</button>
+    <h3>Auto Bed Leveling</h3>
+    <button id="autoLevelButton" data-bind="click: performAutoLevel">Start Auto Bed Leveling</button>
   </div>
 
+  <!-- Set Initial Z-axis Zero Section -->
   <div>
-    <h2>Laser Focusing</h2>
-    <button id="ZOffsetButton" data-bind="click: setZOffset">Zero Off Worksurface</button>
-    <button id="engraveTestLinesButton" data-bind="click: engraveTestLines">Engrave Test Lines</button>
+    <h3>Set Initial Z-axis Zero</h3>
+    <div id="control-jog-z" class="jog-panel">
+      <h4>Move Z-axis</h4>
+      <div>
+        <button id="control-zinc" class="btn box" data-bind="enable: isOperational() && !isPrinting(), click: function() { $root.sendJogCommand('z', 1) }">Move Up</button>
+      </div>
+      <div>
+        <button id="control-zhome" class="btn box" data-bind="enable: isOperational() && !isPrinting(), click: function() { $root.sendHomeCommand(['z']) }">Home Z-axis</button>
+      </div>
+      <div>
+        <button id="control-zdec" class="btn box" data-bind="enable: isOperational() && !isPrinting(), click: function() { $root.sendJogCommand('z', -1) }">Move Down</button>
+      </div>
+    </div>
+  </div>
 
+  <!-- Test Engraving Section -->
+  <div>
+    <h3>Test Engraving</h3>
+    <button id="engraveTestLinesButton" data-bind="click: engraveTestLines">Run Test Engraving</button>
     <div>
       <label for="selectedLineInput">Selected Line:</label>
       <input id="selectedLineInput" type="number" min="0" max="19" step="1" data-bind="value: selectedLine">
