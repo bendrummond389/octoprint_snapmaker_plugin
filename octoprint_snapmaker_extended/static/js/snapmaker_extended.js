@@ -16,6 +16,7 @@ $(function () {
         self.isOperational = controlViewModel.isOperational;
         self.isPrinting = controlViewModel.isPrinting;
         self.sendJogCommand = controlViewModel.sendJogCommand;
+        self.stripDistanceDecimal = controlViewModel.stripDistanceDecimal;
 
         self.distances = ko.observableArray([0.1, 1, 10, 100]);
         self.distance = ko.observable(10);
