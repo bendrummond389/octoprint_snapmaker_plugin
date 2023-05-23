@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import absolute_import
 import octoprint.plugin
+from octoprint.filemanager.util import FileDestinations
 from flask import jsonify, request
 import os
 
@@ -61,11 +62,13 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        file_meta = self._file_manager.get_metadata(octoprint.filemanager.Location.LOCAL, "octoprint_snapmaker_extended/gcode/test_lines.gcode")
-        file_path = file_meta.path_on_disk
-        success, message = self.send_gcode_file(file_path)
-        return jsonify(success=success, message=message)
-
+        file_meta = self._file_manager.get_metadata(FileDestinations.LOCAL, "octoprint_snapmaker_extended/gcode/test_lines.gcode")
+        if file_meta is not None:
+            file_path = self._file_manager.path_on_disk(FileDestinations.LOCAL, "octoprint_snapmaker_extended/gcode/test_lines.gcode")
+            success, message = self.send_gcode_file(file_path)
+            return jsonify(success=success, message=message)
+        else:
+            return jsonify(success=False, message="File not found")
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
     def set_focused_z_offset(self):
