@@ -36,7 +36,9 @@ class SnapmakerExtendedPlugin(
         }
 
     ## Plugin specific methods ##
-    def send_gcode_file(self, file_path):
+    def send_gcode_file(self, relative_path):
+        base_dir = os.path.dirname(os.path.abspath(__file__))
+        file_path = os.path.join(base_dir, relative_path)
         if not os.path.isfile(file_path):
             return False, "File not found"
         try:
@@ -70,8 +72,7 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        file_path = self.get_gcode_file_path()
-        success, message = self.send_gcode_file(file_path)
+        success, message = self.send_gcode_file("gcode/test_lines.gcode")
         return jsonify(success=success, message=message)
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
