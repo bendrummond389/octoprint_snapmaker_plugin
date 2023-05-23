@@ -37,7 +37,8 @@ class SnapmakerExtendedPlugin(
 
     ## Plugin specific methods ##
     def on_after_startup(self):
-        all_files = self._file_manager.list_files(path=None, filter=None, recursive=True)
+        file_manager = self._file_manager
+        all_files = file_manager.list_files(path=None, recursive=True)
         self._logger.info("All Files: {0}".format(all_files))
         
         
