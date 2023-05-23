@@ -36,20 +36,17 @@ class SnapmakerExtendedPlugin(
         }
 
     ## Plugin specific methods ##
-    def send_gcode_file(self, file_path):
-        if not os.path.isfile(file_path):
-            return False, "File not found"
-        try:
-            with open(file_path) as file:
-                gcode = file.readlines()
-            self._printer.commands([command.strip() for command in gcode])
-            return True, "File sent successfully"
-        except Exception as e:
-            self._logger.exception("Error while trying to send file to printer: {0}".format(e))
-            return False, str(e)
+        
+    def read_gcode_file(self):
+        # Path to your gcode file
+        gcode_file_path = os.path.join(os.path.dirname(__file__), "gcode", "test.gcode")
 
-    def get_plugin_base_folder(self):
-        return os.path.dirname(os.path.realpath(__file__))
+        # Open, read, and close the file
+        with open(gcode_file_path, 'r') as file:
+            gcode_data = file.read()
+            
+        return gcode_data
+
 
     ## Plugin routes ##
     @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
@@ -64,11 +61,9 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        plugin_base_folder = self.get_plugin_base_folder()
-        gcode_file_relative_path = "gcode/test_lines.gcode"
-        gcode_file_path = os.path.join(plugin_base_folder, gcode_file_relative_path)
-        success, message = self.send_gcode_file(gcode_file_path)
-        return jsonify(success=success, message=message)
+        gcode_data = self.read_gcode_file()
+        print(gcode_data)
+        return jsonify(success=True)
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
     def set_focused_z_offset(self):
