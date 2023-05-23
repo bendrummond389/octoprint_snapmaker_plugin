@@ -38,15 +38,15 @@ class SnapmakerExtendedPlugin(
 
     ## Plugin specific methods ##
         
-    def read_gcode_file(self):
+    def read_gcode_file(self, file_name):
         # Path to your gcode file
-        gcode_file_path = pkg_resources.resource_filename("octoprint_snapmaker_extended", "gcode/test.gcode")
+        gcode_file_path = pkg_resources.resource_filename("octoprint_snapmaker_extended", f"gcode/{file_name}")
         print(gcode_file_path)
 
         # Open, read, and close the file
         with open(gcode_file_path, 'r') as file:
-            gcode_data = file.read()
-            
+            gcode_data = file.readlines()  # Change to readlines to get a list of gcode commands
+        
         return gcode_data
 
 
@@ -63,8 +63,11 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        gcode_data = self.read_gcode_file()
-        print(gcode_data)
+        gcode_data = self.read_gcode_file("test_lines.gcode")  # Specify your file name here
+        for line in gcode_data:
+            line = line.strip()  # Remove newline characters
+            if len(line) > 0 and not line.startswith(";"):  # Avoid sending empty lines and comments
+                self._printer.commands(line)
         return jsonify(success=True)
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
