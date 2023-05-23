@@ -1,7 +1,6 @@
 # coding=utf-8
 from __future__ import absolute_import
 import octoprint.plugin
-from octoprint.filemanager import FileLocations
 from flask import jsonify, request
 import os
 
@@ -49,6 +48,9 @@ class SnapmakerExtendedPlugin(
             self._logger.exception("Error while trying to send file to printer: {0}".format(e))
             return False, str(e)
 
+    def get_plugin_base_folder(self):
+        return os.path.dirname(os.path.realpath(__file__))
+
     ## Plugin routes ##
     @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
     def auto_level(self):
@@ -62,8 +64,10 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        file_path = "/home/pi/oprint/lib/python3.9/site-packages/octoprint_snapmaker_extended/gcode/test_lines.gcode"
-        success, message = self.send_gcode_file(file_path)
+        plugin_base_folder = self.get_plugin_base_folder()
+        gcode_file_relative_path = "gcode/test_lines.gcode"
+        gcode_file_path = os.path.join(plugin_base_folder, gcode_file_relative_path)
+        success, message = self.send_gcode_file(gcode_file_path)
         return jsonify(success=success, message=message)
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
