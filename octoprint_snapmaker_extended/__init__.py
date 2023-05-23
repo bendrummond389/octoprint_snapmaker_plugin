@@ -2,7 +2,7 @@
 from __future__ import absolute_import
 import octoprint.plugin
 from flask import jsonify, request
-
+import os
 
 class SnapmakerExtendedPlugin(
     octoprint.plugin.SettingsPlugin,
@@ -10,6 +10,8 @@ class SnapmakerExtendedPlugin(
     octoprint.plugin.TemplatePlugin,
     octoprint.plugin.BlueprintPlugin,
 ):
+
+    ## Octoprint required plugin methods ##
     def get_settings_defaults(self):
         return {}
 
@@ -33,6 +35,20 @@ class SnapmakerExtendedPlugin(
             }
         }
 
+    ## Plugin specific methods ##
+    def send_gcode_file(self, file_path):
+        if not os.path.isfile(file_path):
+            return False, "File not found"
+        try:
+            with open(file_path) as file:
+                gcode = file.readlines()
+            self._printer.commands([command.strip() for command in gcode])
+            return True, "File sent successfully"
+        except Exception as e:
+            self._logger.exception("Error while trying to send file to printer: {0}".format(e))
+            return False, str(e)
+
+    ## Plugin routes ##
     @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
     def auto_level(self):
         self._printer.commands("G1029 A")
@@ -45,59 +61,9 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        laser_power = 255
-        commands = ["G92 X0 Y0"]
-
-        for line in range(20):
-            z = 3 + (line * 0.5)
-            y = line * 2
-            commands.extend(
-                [
-                    f"G1 Z{z}",
-                    f"G1 X0 Y{y} F1000",
-                    f"M3 P{laser_power}",
-                    f"G1 X20 Y{y} F1000",
-                    "M5",
-                ]
-            )
-
-        self._printer.commands(commands)
-        return jsonify(success=True)
-
-    @octoprint.plugin.BlueprintPlugin.route("/engraveTestBoxes", methods=["POST"])
-    def engrave_test_boxes(self):
-        num_boxes = 20
-        box_size = 1
-        max_power = 255
-        min_power = max_power * 0.1
-        max_feed_rate = 5000
-        min_feed_rate = 1000
-        commands = ["G92 X0 Y0"]
-
-        for i in range(num_boxes):
-            for j in range(num_boxes):
-                x = i * box_size
-                y = j * box_size
-                power = min_power + ((max_power - min_power) / (num_boxes - 1) * i)
-                feed_rate = min_feed_rate + (
-                    (max_feed_rate - min_feed_rate) / (num_boxes - 1) * j
-                )
-
-                commands.extend(
-                    [
-                        f"G1 Z0",
-                        f"G1 X{x} Y{y} F{feed_rate:.0f}",
-                        f"M3 P{power:.0f}",
-                        f"G1 X{x+box_size} Y{y} F{feed_rate:.0f}",
-                        f"G1 X{x+box_size} Y{y+box_size} F{feed_rate:.0f}",
-                        f"G1 X{x} Y{y+box_size} F{feed_rate:.0f}",
-                        f"G1 X{x} Y{y} F{feed_rate:.0f}",
-                        "M5",
-                    ]
-                )
-
-        self._printer.commands(commands)
-        return jsonify(success=True)
+        file_path = octoprint.server.fileManager.get_path(octoprint.filemanager.Location.LOCAL, "octoprint_snapmaker_extended/gcode/test_lines.gcode")
+        success, message = self.send_gcode_file(file_path)
+        return jsonify(success=success, message=message)
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
     def set_focused_z_offset(self):
