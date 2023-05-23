@@ -40,6 +40,7 @@ class SnapmakerExtendedPlugin(
     def read_gcode_file(self):
         # Path to your gcode file
         gcode_file_path = os.path.join(os.path.dirname(__file__), "gcode", "test.gcode")
+        print(gcode_file_path)
 
         # Open, read, and close the file
         with open(gcode_file_path, 'r') as file:
