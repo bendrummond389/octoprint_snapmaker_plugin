@@ -61,9 +61,11 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        file_path = octoprint.server.fileManager.get_path(octoprint.filemanager.Location.LOCAL, "octoprint_snapmaker_extended/gcode/test_lines.gcode")
+        file_meta = self._file_manager.get_metadata(octoprint.filemanager.Location.LOCAL, "octoprint_snapmaker_extended/gcode/test_lines.gcode")
+        file_path = file_meta.path_on_disk
         success, message = self.send_gcode_file(file_path)
         return jsonify(success=success, message=message)
+
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
     def set_focused_z_offset(self):
