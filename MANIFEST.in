@@ -2,3 +2,5 @@ include README.md
 recursive-include octoprint_snapmaker_extended/templates *
 recursive-include octoprint_snapmaker_extended/translations *
 recursive-include octoprint_snapmaker_extended/static *
+recursive-include octoprint_snapmaker_extended/gcode *
+
