@@ -36,6 +36,11 @@ class SnapmakerExtendedPlugin(
         }
 
     ## Plugin specific methods ##
+    def on_after_startup(self):
+        all_files = self._file_manager.list_files(path=None, filter=None, recursive=True)
+        self._logger.info("All Files: {0}".format(all_files))
+        
+        
     def send_gcode_file(self, relative_path):
         base_dir = os.path.dirname(os.path.abspath(__file__))
         file_path = os.path.join(base_dir, relative_path)
@@ -70,23 +75,10 @@ class SnapmakerExtendedPlugin(
         self._printer.commands("G92 Z0")
         return jsonify(success=True)
 
-
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        # Get a list of all files in the local storage
-        all_files = self._file_manager.list_files(FileLocations.LOCAL)
-
-        # Log all files for debugging
-        self._logger.info(f"All files: {all_files}")
-
-        relative_path = "octoprint_snapmaker_extended/gcode/test_lines.gcode"
-        file_exists = relative_path in all_files[FileLocations.LOCAL]
-
-        if file_exists:
-            success, message = self.send_gcode_file(relative_path)
-            return jsonify(success=success, message=message)
-        else:
-            return jsonify(success=False, message="File not found")
+        success, message = self.send_gcode_file("gcode/test_lines.gcode")
+        return jsonify(success=success, message=message)
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
     def set_focused_z_offset(self):
