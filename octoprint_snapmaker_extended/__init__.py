@@ -2,7 +2,8 @@
 from __future__ import absolute_import
 import octoprint.plugin
 from flask import jsonify, request
-import os
+import pkg_resources
+
 
 class SnapmakerExtendedPlugin(
     octoprint.plugin.SettingsPlugin,
@@ -39,7 +40,7 @@ class SnapmakerExtendedPlugin(
         
     def read_gcode_file(self):
         # Path to your gcode file
-        gcode_file_path = os.path.join(os.path.dirname(__file__), "gcode", "test.gcode")
+        gcode_file_path = pkg_resources.resource_filename("octoprint_snapmaker_extended", "gcode/test.gcode")
         print(gcode_file_path)
 
         # Open, read, and close the file
