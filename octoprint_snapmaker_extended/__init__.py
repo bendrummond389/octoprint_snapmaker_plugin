@@ -1,6 +1,7 @@
 # coding=utf-8
 from __future__ import absolute_import
 import octoprint.plugin
+from octoprint.filemanager import FileLocations
 from flask import jsonify, request
 import os
 
@@ -36,15 +37,7 @@ class SnapmakerExtendedPlugin(
         }
 
     ## Plugin specific methods ##
-    def on_after_startup(self):
-        file_manager = self._file_manager
-        all_files = file_manager.list_files(path=None, recursive=True)
-        self._logger.info("All Files: {0}".format(all_files))
-        
-        
-    def send_gcode_file(self, relative_path):
-        base_dir = os.path.dirname(os.path.abspath(__file__))
-        file_path = os.path.join(base_dir, relative_path)
+    def send_gcode_file(self, file_path):
         if not os.path.isfile(file_path):
             return False, "File not found"
         try:
@@ -55,15 +48,6 @@ class SnapmakerExtendedPlugin(
         except Exception as e:
             self._logger.exception("Error while trying to send file to printer: {0}".format(e))
             return False, str(e)
-
-    def get_plugin_base_folder(self):
-        current_file_path = os.path.realpath(__file__)
-        return os.path.dirname(current_file_path)
-
-    def get_gcode_file_path(self):
-        base_folder = self.get_plugin_base_folder()
-        gcode_file_path = os.path.join(base_folder, "gcode", "test_lines.gcode")
-        return gcode_file_path
 
     ## Plugin routes ##
     @octoprint.plugin.BlueprintPlugin.route("/autolevel", methods=["POST"])
@@ -78,7 +62,8 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        success, message = self.send_gcode_file("gcode/test_lines.gcode")
+        file_path = "/home/pi/oprint/lib/python3.9/site-packages/octoprint_snapmaker_extended/gcode/test_lines.gcode"
+        success, message = self.send_gcode_file(file_path)
         return jsonify(success=success, message=message)
 
     @octoprint.plugin.BlueprintPlugin.route("/setFocusedZOffset", methods=["POST"])
