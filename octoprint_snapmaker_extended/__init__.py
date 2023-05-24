@@ -63,10 +63,10 @@ class SnapmakerExtendedPlugin(
 
     @octoprint.plugin.BlueprintPlugin.route("/engraveTestLines", methods=["POST"])
     def engrave_test_lines(self):
-        gcode_data = self.read_gcode_file("test_lines.gcode")  # Specify your file name here
+        gcode_data = self.read_gcode_file("test_lines.gcode")  
         for line in gcode_data:
-            line = line.strip()  # Remove newline characters
-            if len(line) > 0 and not line.startswith(";"):  # Avoid sending empty lines and comments
+            line = line.strip()  
+            if len(line) > 0 and not line.startswith(";"):  
                 self._printer.commands(line)
         return jsonify(success=True)
 
