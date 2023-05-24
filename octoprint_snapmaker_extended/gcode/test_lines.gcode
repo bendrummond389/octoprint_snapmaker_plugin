@@ -12,7 +12,7 @@
 ; SnapMaker device profile, absolute coords
 ; Bounds: X2.03 Y1.32 to X63.81 Y25
 G21
-G91
+G90
 ; Cut @ 300 mm/min, 100% power
 M106 P0 S255
 M05
